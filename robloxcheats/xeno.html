@@ -1,0 +1,415 @@
+html_content = """<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xeno Executor - Внешний чит-инжектор для Roblox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0b0f;
+            --card-bg: #12121a;
+            --accent-color: #8a2be2;
+            --accent-hover: #9d4edd;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: #1e1e2f;
+            --warning-color: #ffb703;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(11, 11, 15, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 60px 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            max-width: 800px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(45deg, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mirror-tag {
+            background: rgba(255, 183, 3, 0.1);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .btn-download {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 14px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .btn-download:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 8%;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: left;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 80px 8%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 20px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+            color: var(--accent-color);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 25px;
+            color: var(--text-muted);
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 8% 40px 8%;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h4 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links h5 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 20px 5%; }
+            nav { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .footer-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">Xeno</a>
+        <nav>
+            <a href="#features">Преимущества</a>
+            <a href="#faq">FAQ</a>
+            <a href="#download">Скачать</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="download">
+        <h1>XENO EXECUTOR - ВНЕШНИЙ <span>СКРИПТ-ИНЖЕКТОР ДЛЯ ROBLOX</span></h1>
+        <div class="mirror-tag">НЕОФИЦИАЛЬНОЕ ЗЕРКАЛО — ПРЯМАЯ ССЫЛКА БЕЗ ЗАДАНИЙ</div>
+        <p>Быстрый, безопасный и надежный внешний инжектор для Roblox. Легкий запуск любых скриптов без лишних сложностей.</p>
+        <a href="https://xeno.now/99aca0c5/3734fe27c699/73662e3d135f?hash=nqNWDzwpXmcr0H2EhgrTKV9y62OLo7UCuBBsFYV1RZnUBqTjaSQ29k4Khkms7BYr" class="btn-download">Скачать сейчас (Прямая ссылка)</a>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">Преимущества Xeno</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Высокая производительность</h3>
+                <p>Оптимизированный движок обеспечивает быстрый инжект и стабильное выполнение скриптов без просадок FPS.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Безопасность и защита</h3>
+                <p>Использует современную внешнюю архитектуру (External Architecture), минимизируя риски обнаружения.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Постоянная поддержка</h3>
+                <p>Регулярные обновления под новые патчи Roblox и оперативное исправление любых ошибок.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <h2 class="section-title" style="text-align: center;">Часто задаваемые вопросы</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">Где найти официальный Discord сообщества?</div>
+            <div class="faq-answer">
+                Присоединяйтесь к официальному Discord-серверу Xeno по ссылке: <a href="https://discord.gg/xe-no" target="_blank" style="color: var(--accent-color);">discord.gg/xe-no</a>.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Как связаться с разработчиками по почте?</div>
+            <div class="faq-answer">
+                По официальным вопросам и сотрудничеству вы можете написать на почту: <a href="mailto:rizve@xeno.onl" style="color: var(--accent-color);">rizve@xeno.onl</a>.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Где почитать отзывы пользователей?</div>
+            <div class="faq-answer">
+                Ознакомиться с реальными отзывами можно на странице Trustpilot: <a href="https://www.trustpilot.com/review/www.xeno.onl" target="_blank" style="color: var(--accent-color);">Trustpilot Xeno</a>.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Безопасно ли скачивать с этого зеркала?</div>
+            <div class="faq-answer">
+                Да, на нашем зеркале предоставлена прямая ссылка на скачивание без редиректов, прохождения сократителей и выполнения заданий.
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>Xeno</h4>
+                <p style="color: var(--text-muted); max-width: 250px; font-size: 14px;">Мощный и надежный внешний скрипт-инжектор для Roblox.</p>
+            </div>
+            <div class="footer-links">
+                <h5>Контакты и Ссылки</h5>
+                <ul>
+                    <li><a href="https://discord.gg/xe-no" target="_blank">Discord Сервер</a></li>
+                    <li><a href="https://www.trustpilot.com/review/www.xeno.onl" target="_blank">Отзывы на Trustpilot</a></li>
+                    <li><a href="mailto:rizve@xeno.onl">Email: rizve@xeno.onl</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; Xeno Executor. Неофициальное зеркало без заданий. Все права защищены.
+        </div>
+    </footer>
+
+    <script>
+        // Функционал аккордеона FAQ
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                
+                // Закрываем другие вкладки при открытии новой
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    if (i !== item) i.classList.remove('active');
+                });
+                
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
+"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("HTML file written successfully.")
