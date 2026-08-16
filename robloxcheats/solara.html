@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solara Executor - Неофициальное зеркало без заданий</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0b0f;
+            --card-bg: #12121a;
+            --accent-color: #8a2be2;
+            --accent-hover: #9d4edd;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: #1e1e2f;
+            --warning-color: #ffb703;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(11, 11, 15, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 60px 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            max-width: 800px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(45deg, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mirror-tag {
+            background: rgba(255, 183, 3, 0.1);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .btn-download {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 14px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .btn-download:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 8%;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: left;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 80px 8%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 20px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+            color: var(--accent-color);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 25px;
+            color: var(--text-muted);
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 8% 40px 8%;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h4 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links h5 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 20px 5%; }
+            nav { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .footer-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">Solara</a>
+        <nav>
+            <a href="#features">Преимущества</a>
+            <a href="#faq">FAQ</a>
+            <a href="#download">Скачать</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="download">
+        <h1>SOLARA EXECUTOR - ВНЕШНИЙ <span>СКРИПТ-ИНЖЕКТОР ДЛЯ ROBLOX</span></h1>
+        <div class="mirror-tag">НЕОФИЦИАЛЬНОЕ ЗЕРКАЛО — ПРЯМАЯ ССЫЛКА БЕЗ ЗАДАНИЙ</div>
+        <p>Первый и лучший внешний инжектор после Byfron. Быстрый, безопасный и надежный запуск скриптов для вашего комфортного гейминга.</p>
+        <a href="https://getsolara.dev/download/static/files/BootstrapperNew.exe" class="btn-download">Скачать сейчас (Прямая ссылка)</a>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">Мы позаботились обо всем</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Высокая совместимость</h3>
+                <p>Плавно запускает подавляющее большинство сложных скриптов без сбоев и вылетов.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Внешний и безопасный</h3>
+                <p>Разработан с использованием передовых внешних методов, обеспечивающих максимальную безопасность вашего аккаунта.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Регулярные обновления</h3>
+                <p>Постоянно поддерживается и обновляется разработчиками для сохранения стабильной работоспособности.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <h2 class="section-title" style="text-align: center;">Часто задаваемые вопросы</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">Какой официальный Discord или Telegram?</div>
+            <div class="faq-answer">
+                Вы можете найти актуальные официальные ссылки на каналы связи в блоке социальных сетей ниже или в подвале сайта. Всегда проверяйте, что используете официальные источники.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Сколько процентов sUNC / UNC?</div>
+            <div class="faq-answer">
+                Solara предоставляет высокий уровень совместимости со скриптами (UNC), позволяя успешно выполнять тяжелые и многоуровневые сценарии.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Почему это бесплатно?</div>
+            <div class="faq-answer">
+                Мы стремимся предоставлять доступные инструменты для нашего комьюнити. Проект развивается благодаря вовлеченности сообщества и поддержке добровольных разработчиков.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Как связаться с разработчиком?</div>
+            <div class="faq-answer">
+                Проще всего связаться с командой разработчиков или техподдержкой через наши официальные сообщества в Discord и Revolt.
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>Solara</h4>
+                <p style="color: var(--text-muted); max-width: 250px; font-size: 14px;">Продвинутая внешняя среда выполнения скриптов для стабильности и высокой производительности.</p>
+            </div>
+            <div class="footer-links">
+                <h5>Социальные сети</h5>
+                <ul>
+                    <li><a href="https://x.com/solararoblox" target="_blank">Twitter (X)</a></li>
+                    <li><a href="https://discord.com/discovery/applications/1305153768945487913" target="_blank">Discord</a></li>
+                    <li><a href="https://app.revolt.chat/invite/yQBTsMHA" target="_blank">Revolt</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; Авторские права CMD Softworks Solara Executor. Все права защищены.
+        </div>
+    </footer>
+
+    <script>
+        // Функционал аккордеона FAQ
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                
+                // Закрываем другие вкладки при открытии новой
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    if (i !== item) i.classList.remove('active');
+                });
+                
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
